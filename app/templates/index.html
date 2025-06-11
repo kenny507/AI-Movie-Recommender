@@ -1,0 +1,45 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Recommender</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f7f7f7; }
+        h1 { color: #333; }
+        form { margin-bottom: 20px; }
+        select, button { padding: 10px; font-size: 16px; }
+        .results { background-color: #fff; padding: 20px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <h1>Movie Recommender</h1>
+    <form method="POST" action="/recommend">
+        <label for="movie">Choose a movie:</label><br><br>
+        <select name="movie" id="movie">
+            {% for movie in movies %}
+                <option value="{{ movie }}">{{ movie }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Get Recommendations</button>
+    </form>
+    {% if message %}
+        <p style="color: black; font-weight: bold;">{{ message }}</p>
+    {% endif %}
+
+    {% if recommendations %}
+    <div class="results">
+        <h2>Top Recommendations:</h2>
+        <ul>
+            {% for rec in recommendations %}
+            <li>
+                <strong>{{ rec['title'] }}</strong><br>
+                Similarity: {{ rec['correlation'] | round(2) }}<br>
+                Rated by: {{ rec['num_ratings'] }} users
+            </li>
+    {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+</body>
+</html>
